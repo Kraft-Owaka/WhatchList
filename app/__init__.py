@@ -10,6 +10,8 @@ app.config.from_pyfile('config.py')
 
 from app import views
 
+from flask_bootstrap import Bootstrap
+
 #We import the Flask class 
 # from flask module and 
 # use it to create an app 
