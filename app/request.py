@@ -51,7 +51,7 @@ def process_results(movie_list):
     '''
     movie_results = []
     for movie_item in movie_list:
-        id = movie_item.get('id')
+        movie_id = movie_item.get('id')
         title = movie_item.get('original_title')
         overview = movie_item.get('overview')
         poster = movie_item.get('poster_path')
@@ -60,15 +60,15 @@ def process_results(movie_list):
 
         if poster:
 
-            movie_object = Movie(id,title,overview,poster,vote_average,vote_count)
+            movie_object = Movie(movie_id,title,overview,poster,vote_average,vote_count)
             movie_results.append(movie_object)
 
     return movie_results
 
 
 
-def get_movie(id):
-    get_movie_details_url = base_url.format(id,api_key)
+def get_movie(movie_id):
+    get_movie_details_url = base_url.format(movie_id,api_key)
 
     with urllib.request.urlopen(get_movie_details_url) as url:
         movie_details_data = url.read()
@@ -76,14 +76,14 @@ def get_movie(id):
 
         movie_object = None
         if movie_details_response:
-            id = movie_details_response.get('id')
+            movie_id = movie_details_response.get('id')
             title = movie_details_response.get('original_title')
             overview = movie_details_response.get('overview')
             poster = movie_details_response.get('poster_path')
             vote_average = movie_details_response.get('vote_average')
             vote_count = movie_details_response.get('vote_count')
 
-            movie_object = Movie(id,title,overview,poster,vote_average,vote_count)
+            movie_object = Movie(movie_id,title,overview,poster,vote_average,vote_count)
 
     return movie_object
 
