@@ -1,6 +1,5 @@
-from app import create_app,bd
+from app import create_app,db
 from . import db
-from app.models import User
 
 
 
@@ -15,8 +14,12 @@ class Movie:
         self.poster = "http://image.tmdb.org/t/p/w500/"+ poster
         self.vote_average = vote_average
         self.vote_count = vote_count
+
+
 class Review:
+
     all_reviews = []
+
     def __init__(self,movie_id,title,imageurl,Review):
         self.movie_id = movie_id
         self.title = title
@@ -48,11 +51,5 @@ class User (db.Model):
 
     def __repr__(self):
         return f'User {self.username}'
-
-    @manager.shell
-    def make_shell_context():
-        return dict(app = app,db = db,User = User )
-    if __name__ == '__main__':
-        manager.run()
  
  
