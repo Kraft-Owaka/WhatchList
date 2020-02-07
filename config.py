@@ -6,10 +6,11 @@ class Config:
     '''
     General configuration parent class
     '''
-   
+    
     MOVIE_API_BASE_URL ='https://api.themoviedb.org/3/movie/{}?api_key={}'
     MOVIE_API_KEY = os.environ.get('MOVIE_API_KEY')
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = 'bc29199ac8b2b522fd951d97e0da5c62'
+    # app.config['SECRET_KEY'] = SECRET_KEY
 
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://kraft:moringaschool24@localhost/watchlist'
     UPLOADED_PHOTOS_DEST ='app/static/photos'

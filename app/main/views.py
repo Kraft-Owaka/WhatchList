@@ -1,10 +1,12 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
 from ..request import get_movies,get_movie,search_movie
-from .form import RegistrationForm
-from ..models import Review,User
-from flask_login import login_required,current_user
-from .. import db
+from .form import ReviewForm
+from ..models import Review
+from flask_login import login_required
+
+
+#Review = reviews.Review
 
 # Views
 @main.route('/')
