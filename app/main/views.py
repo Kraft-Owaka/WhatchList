@@ -1,11 +1,10 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,abort
 from . import main
 from ..request import get_movies,get_movie,search_movie
-from .form import ReviewForm
-from ..models import Review
-
-
-#Review = reviews.Review
+from .form import RegistrationForm
+from ..models import Review,User
+from flask_login import login_required,current_user
+from .. import db
 
 # Views
 @main.route('/')
@@ -19,7 +18,7 @@ def index():
     popular_movies = get_movies('popular')
     upcoming_movie = get_movies('upcoming')
     now_showing_movie = get_movies('now_playing')
-    print(popular_movies)
+   
     title = 'Home - Welcome to The best Movie Review Website Online'
     
     search_movie = request.args.get('movie_query')
@@ -54,6 +53,7 @@ def search(movie_name):
     return render_template('search.html',movies = searched_movies)
 
 @main.route('/movie/review/new/<int:movie_id>', methods = ['GET','POST'])
+@login_required
 def new_review(movie_id):
     form = ReviewForm()
     movie = get_movie(movie_id)
