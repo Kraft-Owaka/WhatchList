@@ -17,11 +17,7 @@ def create_app(config_name):
 
     # Create the app configurations 
     app.config.from_object(config_options[config_name])
-<<<<<<< HEAD
-    #config_options[config_name].init_app(app)
-=======
     # config_options[config_name].init_app(app)
->>>>>>> pull-request-demo
 
     # Initializing flask exrensions
     bootstrap.init_app(app)
@@ -41,20 +37,9 @@ def create_app(config_name):
     from .request import configure_request
     configure_request(app)
 
- 
-
-
-    
-
     
 
     # Will add the views and forms
 
     return app
 
-<<<<<<< HEAD
-
-
-  
-=======
->>>>>>> pull-request-demo
