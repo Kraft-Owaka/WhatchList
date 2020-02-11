@@ -1,10 +1,10 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,abort
 from . import main
 from ..request import get_movies,get_movie,search_movie
 from .form import ReviewForm,UpdateProfile
-from .. import db
 from ..models import Review, User
 from flask_login import login_required
+from .. import db
 
 
 #Review = reviews.Review
@@ -31,26 +31,17 @@ def index():
     else:
          return render_template('index.html', title = title, popular = popular_movies, upcoming = upcoming_movie, now_showing = now_showing_movie )
 
-@main.route('/user/<uname>')
-def profile(uname):
-    user = User.query.filter_by(username = uname).first()
 
-    if user is None:
-        abort(404)
-
-    return render_template("profile/profile.html", user = user)
-
-
-
-@main.route('/movie/<int:movie_id>')
-def movie(movie_id):
+@main.route('/movie/<int:id>')
+def movie(id):
 
     '''
     View movie page function that returns the movie details page and its data
     '''
-    movie = get_movie(movie_id)
+    
+    movie = get_movie(id)
     title = f'{movie.title}'
-    reviews = Review.get_reviews(movie.movie_id)
+    reviews = Review.get_reviews(movie.id)
 
     return render_template('movie.html',title = title,movie = movie,reviews = reviews)
 
@@ -67,22 +58,33 @@ def search(movie_name):
 
 @main.route('/movie/review/new/<int:movie_id>', methods = ['GET','POST'])
 @login_required
-def new_review(movie_id):
+def new_review(id):
     form = ReviewForm()
-    movie = get_movie(movie_id)
+    movie = get_movie(id)
 
     if form.validate_on_submit():
         title = form.title.data
         review = form.review.data
-        new_review = Review(movie.movie_id,title,movie.poster,review)
+        new_review = Review(movie.id,title,movie.poster,review)
         new_review.save_review()
-        return redirect(url_for('movie',movie_id = movie.movie_id ))
+
+        return redirect(url_for('.movie',id = movie.id ))
 
     title = f'{movie.title} review'
     return render_template('new_review.html',title = title, review_form=form, movie=movie)
 
-@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@main.route('/user/<uname>')
 @login_required
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
+
+
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
 def update_profile(uname):
     user = User.query.filter_by(username = uname).first()
     if user is None:
